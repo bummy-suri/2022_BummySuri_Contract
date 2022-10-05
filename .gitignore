@@ -3,12 +3,7 @@ coverage
 coverage.json
 yarn-error.log
 
-!env/
-env/*
-!env/.example.env
-!env/.hardhat.env
-!env/.baobab.env
-!env/.env.development
+env
 
 deployments/hardhat
 deployments/localhost

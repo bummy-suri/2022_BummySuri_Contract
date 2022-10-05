@@ -1,16 +1,14 @@
 pragma solidity 0.8.11;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract MyLittleTiger is ERC721, ERC721Enumerable {
+contract MyLittleTiger is ERC721EnumerableUpgradeable {
     using Counters for Counters.Counter;
 
     address public masterAdmin;
-    uint256 public ASSET_LIMIT = 3000;
-    // QmQbKyKvQvAUnY9cpfVPFHcpwVs7Vo2kiJ4ffsHpmY1mt7
-    string private _baseURIextended;
+    uint256 public assetLimit;
+    string public baseURIextended;
     bool internal uriSet;
     Counters.Counter private _tokenIdCounter;
 
@@ -19,44 +17,56 @@ contract MyLittleTiger is ERC721, ERC721Enumerable {
         _;
     }
 
-    // TODO: name, symbol 수정
-    constructor() ERC721("TEMPNAME", "TEMPSYMBOL") {}
-
-    // TODO: upgradeable로 수정
-    function initialize(string memory baseURI_) external {
-        masterAdmin = msg.sender;
-        _baseURLextended = baseURI_;
+    modifier preMintChecker(uint256 _numAssets) {
+        require(uriSet == true, "MLTContract: INVALID_BASE_URI_SET");
+        require(totalSupply() + _numAssets <= assetLimit, "MLTContract: ASSET_LIMIT");
+        _;
     }
 
+    function initialize(
+        string memory name_,
+        string memory symbol_,
+        string memory baseURI_,
+        uint256 assetLimit_
+    ) external initializer {
+        // TODO: name_, symbol_ 수정
+        __ERC721_init(name_, symbol_);
+        masterAdmin = msg.sender;
+        assetLimit = assetLimit_;
+        uriSet = true;
+        baseURIextended = baseURI_;
+    }
+
+    // Emergency function
     function setMasterAdmin(address masterAdmin_) external onlyMasterAdmin {
         masterAdmin = masterAdmin_;
     }
 
     function setBaseURI(string memory baseURI_) external onlyMasterAdmin {
         uriSet = true;
-        _baseURIextended = baseURI_;
+        baseURIextended = baseURI_;
     }
 
-    function giveaway(address receiver, uint256 numAssets) external onlyMasterAdmin {
-        require(uriSet == true, "MLTContract: INVALID_BASE_URI_SET");
-        require(totalSupply() + numAssets <= ASSET_LIMIT, "MLTContract: ASSET_LIMIT");
-
-        for (uint256 i = 0; i < numAssets; i++) {
-            uint256 id;
-            id = _tokenIdCounter.current();
-
-            // start edition at #1 vs #0
-            if (id == 0) {
-                _tokenIdCounter.increment();
-                id = _tokenIdCounter.current();
-            }
-
-            _safeMint(receiver, id);
+    // Mint function
+    function singleMint(address receiver) public preMintChecker(1) onlyMasterAdmin {
+        uint256 id = _tokenIdCounter.current();
+        if (id == 0) {
             _tokenIdCounter.increment();
+            id = _tokenIdCounter.current();
+        }
+
+        _safeMint(receiver, id);
+        _tokenIdCounter.increment();
+    }
+
+    function multipleMint(address receiver, uint256 numAssets) external preMintChecker(numAssets) onlyMasterAdmin {
+        for (uint256 i = 0; i < numAssets; i++) {
+            singleMint(receiver);
         }
     }
 
-    function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
+    // View function
+    function supportsInterface(bytes4 interfaceId) public view override(ERC721EnumerableUpgradeable) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 
@@ -65,11 +75,12 @@ contract MyLittleTiger is ERC721, ERC721Enumerable {
         return _baseURIextended;
     }
 
+    // internal function
     function _beforeTokenTransfer(
         address from,
         address to,
         uint256 tokenId
-    ) internal override(ERC721, ERC721Enumerable) {
+    ) internal override(ERC721EnumerableUpgradeable) {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 }

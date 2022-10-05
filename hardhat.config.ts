@@ -12,10 +12,17 @@ import "@openzeppelin/hardhat-upgrades";
 import "hardhat-log-remover";
 import "hardhat-contract-sizer";
 
+enum Network {
+    cypress = "cypress",
+    baobab = "baobab",
+    hardhat = "hardhat",
+}
+
 enum Command {
     COMPILE = "compile",
     TEST = "test",
 }
+
 const {
     NETWORK,
     DEPLOYER_ACCOUNT,
@@ -32,10 +39,21 @@ async function validateENV() {
 
     if (isBuilding || isTesting) return;
 
-    if (!NETWORK) throw new Error("network를 설정해주세요");
+    if (!NETWORK || !Object.values(Network).includes(NETWORK as Network)) throw new Error("network를 설정해주세요.");
 
     if (DEPLOYER_ACCOUNT === undefined || DEPLOYER_PRIVATE_KEY === undefined) {
         throw new Error("env is undefined");
+    }
+
+    if (NETWORK !== Network.hardhat.toString()) {
+        if (!CHAIN_ID || !PRIVATE_PROVIDER_URL) {
+            throw new Error("env is empty");
+        }
+        if (NETWORK === Network.baobab.toString() || NETWORK === Network.cypress.toString()) {
+            if (!PROVIDER_API_ID || !PROVIDER_API_KEY) {
+                throw new Error("env is empty");
+            }
+        }
     }
 }
 
@@ -79,6 +97,19 @@ const config: HardhatUserConfig = {
             live: false,
             tags: ["hardhat", "test"],
             chainId: 1337,
+        },
+        baobab: {
+            url: PRIVATE_PROVIDER_URL || "",
+            chainId: +(CHAIN_ID || 0),
+            from: DEPLOYER_ACCOUNT || "",
+            gas: "auto",
+            accounts: [DEPLOYER_PRIVATE_KEY || "0"],
+            allowUnlimitedContractSize: true,
+            httpHeaders: {
+                Authorization: "Basic " + Buffer.from(PROVIDER_API_ID + ":" + PROVIDER_API_KEY).toString("base64"),
+                "x-chain-id": "1001",
+                keepAlive: "false",
+            },
         },
     },
     gasReporter: {
