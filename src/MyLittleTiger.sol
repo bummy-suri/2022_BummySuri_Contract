@@ -9,8 +9,8 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
     address public masterAdmin;
     uint256 public assetLimit;
     string public baseURIextended;
-    bool internal uriSet;
-    Counters.Counter private _tokenIdCounter;
+    bool public uriSet;
+    Counters.Counter public _tokenIdCounter;
 
     modifier onlyMasterAdmin() {
         require(msg.sender == masterAdmin, "MLTContract: CALLER_MUST_BE_MASTERADMIN");
@@ -72,7 +72,7 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
 
     // used by inherited 'function tokenURI'
     function _baseURI() internal view virtual override returns (string memory) {
-        return _baseURIextended;
+        return baseURIextended;
     }
 
     // internal function

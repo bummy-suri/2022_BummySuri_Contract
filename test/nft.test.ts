@@ -13,7 +13,7 @@ describe("NFT 테스트", () => {
     // sample data
     const NAME = "TEST_NFT";
     const METADATA = "https://gateway.pinata.cloud/ipfs/QmQYMWbP4Y39vDHoTAj3v1Xez5JWPo2AGexH7WGs8h9uTe/";
-    const ASSET_LIMIT = 3000;
+    const ASSET_LIMIT = 300;
 
     beforeEach(async () => {
         // contract deployment
@@ -33,10 +33,27 @@ describe("NFT 테스트", () => {
 
     describe("프리민팅 관련 테스트", () => {
         it("테스트: singleMint가 정상적으로 동작하는가?", async () => {
+            const num = 1;
             await myLittleTiger.connect(deployer).singleMint(user[0].address);
-            expect(await myLittleTiger.ownerOf(BigNumber.from(1))).to.equal(user[0].address);
-            // expect(await myLittleTiger.)
-            // expect(await myLittleTiger.tokenURI(BigNumber.from(1))).to.equal
+            expect(await myLittleTiger.ownerOf(BigNumber.from(num))).to.equal(user[0].address);
+            expect(await myLittleTiger.balanceOf(user[0].address)).to.equal(BigNumber.from(num));
+            expect(await myLittleTiger.tokenURI(BigNumber.from(num))).to.equal(METADATA.concat(`${num}`));
+        });
+        it("테스트: multipleMint가 정상적으로 동작하는가?", async () => {
+            const num = 3;
+            await myLittleTiger.connect(deployer).multipleMint(user[0].address, BigNumber.from(num));
+            for (let i = 0; i < num; i++) {
+                expect(await myLittleTiger.ownerOf(BigNumber.from(i + 1))).to.equal(user[0].address);
+            }
+            expect(await myLittleTiger.balanceOf(user[0].address)).to.equal(BigNumber.from(num));
+        });
+        it("테스트: ASSET_LIMIT만큼 민팅이 이루어진 후 더 이상 민팅이 되지 않는가?", async () => {
+            for (let i = 0; i < ASSET_LIMIT; i++) {
+                await myLittleTiger.connect(deployer).singleMint(user[0].address);
+            }
+            await expect(myLittleTiger.connect(deployer).singleMint(user[0].address)).to.be.revertedWith(
+                "MLTContract: ASSET_LIMIT",
+            );
         });
     });
 });

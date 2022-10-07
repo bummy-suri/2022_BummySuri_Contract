@@ -14,7 +14,7 @@ export const deployNFT = async (): Promise<RT> => {
     // sample data
     const NAME = "TEST_NFT";
     const METADATA = "https://gateway.pinata.cloud/ipfs/QmQYMWbP4Y39vDHoTAj3v1Xez5JWPo2AGexH7WGs8h9uTe/";
-    const ASSET_LIMIT = 3000;
+    const ASSET_LIMIT = 300;
 
     const MyLittleTigerContract = await ethers.getContractFactory("MyLittleTiger");
     const myLittleTiger = (await upgrades.deployProxy(MyLittleTigerContract, [
