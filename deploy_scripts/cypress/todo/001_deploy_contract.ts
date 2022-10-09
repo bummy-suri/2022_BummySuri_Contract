@@ -9,7 +9,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     // 배포 전 확인: 최초 URI 및 데이터
     const nftName = "Bumi And Suri Test";
     const nftSymbol = "BAS";
-    const testURI = "https://gateway.pinata.cloud/ipfs/QmVU8kKah6xn2bMpbVS2x5gKiugShUpdBFs5GYCS96LBUd/";
+    const testURI = "QmQYMWbP4Y39vDHoTAj3v1Xez5JWPo2AGexH7WGs8h9uTe";
     const assetLimit = 3000;
 
     const MyLittleTiger = await deploy("MyLittleTiger", {

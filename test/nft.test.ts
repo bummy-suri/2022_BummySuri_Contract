@@ -37,7 +37,7 @@ describe("NFT 테스트", () => {
             await myLittleTiger.connect(deployer).singleMint(user[0].address);
             expect(await myLittleTiger.ownerOf(BigNumber.from(num))).to.equal(user[0].address);
             expect(await myLittleTiger.balanceOf(user[0].address)).to.equal(BigNumber.from(num));
-            expect(await myLittleTiger.tokenURI(BigNumber.from(num))).to.equal(METADATA.concat(`${num}`));
+            expect(await myLittleTiger.tokenURI(BigNumber.from(num))).to.equal(METADATA.concat(`${num}.json`));
         });
         it("테스트: multipleMint가 정상적으로 동작하는가?", async () => {
             const num = 3;

@@ -1,10 +1,12 @@
 pragma solidity 0.8.11;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract MyLittleTiger is ERC721EnumerableUpgradeable {
     using Counters for Counters.Counter;
+    using StringsUpgradeable for uint256;
 
     address public masterAdmin;
     uint256 public assetLimit;
@@ -70,12 +72,18 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
         return super.supportsInterface(interfaceId);
     }
 
-    // used by inherited 'function tokenURI'
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        _requireMinted(tokenId);
+
+        string memory baseURI = _baseURI();
+        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString(), ".json")) : "";
+    }
+
+    // internal function
     function _baseURI() internal view virtual override returns (string memory) {
         return baseURIextended;
     }
 
-    // internal function
     function _beforeTokenTransfer(
         address from,
         address to,

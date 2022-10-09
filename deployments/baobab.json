@@ -3,7 +3,7 @@
   "chainId": "1001",
   "contracts": {
     "MyLittleTiger_Implementation": {
-      "address": "0x8c7778287780eE31B5c02c8E48D7D5919C882bdD",
+      "address": "0x96028c05e597b4711E170dbB1D75470383ec7fBD",
       "abi": [
         {
           "anonymous": false,
@@ -557,7 +557,7 @@
       ]
     },
     "MyLittleTiger_Proxy": {
-      "address": "0xB1239365Be14058d35928E3a2504D7a9FF5fD708",
+      "address": "0x99364E04daf6E138b6B4207857cBCFf4C6F826F6",
       "abi": [
         {
           "inputs": [
@@ -705,7 +705,7 @@
       ]
     },
     "MyLittleTiger": {
-      "address": "0xB1239365Be14058d35928E3a2504D7a9FF5fD708",
+      "address": "0x99364E04daf6E138b6B4207857cBCFf4C6F826F6",
       "abi": [
         {
           "anonymous": false,
