@@ -3,7 +3,7 @@
   "chainId": "1001",
   "contracts": {
     "MyLittleTiger_Implementation": {
-      "address": "0x96028c05e597b4711E170dbB1D75470383ec7fBD",
+      "address": "0x87537Edf8EbEb1c7180Ee34de5221A81Eb81df5a",
       "abi": [
         {
           "anonymous": false,
@@ -553,11 +553,30 @@
           ],
           "stateMutability": "view",
           "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "whiteList",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         }
       ]
     },
     "MyLittleTiger_Proxy": {
-      "address": "0x99364E04daf6E138b6B4207857cBCFf4C6F826F6",
+      "address": "0x2e8cb163C849df5093b56e1a0Dfeaf4b829cFD24",
       "abi": [
         {
           "inputs": [
@@ -705,7 +724,7 @@
       ]
     },
     "MyLittleTiger": {
-      "address": "0x99364E04daf6E138b6B4207857cBCFf4C6F826F6",
+      "address": "0x2e8cb163C849df5093b56e1a0Dfeaf4b829cFD24",
       "abi": [
         {
           "anonymous": false,
@@ -1354,6 +1373,25 @@
               "internalType": "bool",
               "name": "",
               "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "whiteList",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
             }
           ],
           "stateMutability": "view",

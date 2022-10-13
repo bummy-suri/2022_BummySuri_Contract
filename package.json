@@ -40,7 +40,7 @@
     "@typescript-eslint/parser": "^5.32.0",
     "@uniswap/lib": "4.0.1-alpha",
     "@uniswap/v2-core": "1.0.0",
-    "caver-js": "1.9.0",
+    "caver-js": "^1.9.0",
     "chai": "4.2.0",
     "dotenv": "10.0.0",
     "eslint": "7.29.0",
