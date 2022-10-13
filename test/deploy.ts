@@ -20,10 +20,11 @@ export const deployNFT = async (): Promise<RT> => {
     const myLittleTiger = (await upgrades.deployProxy(MyLittleTigerContract, [
         NAME,
         NAME,
-        METADATA,
         ASSET_LIMIT,
     ])) as MyLittleTiger;
     await myLittleTiger.deployed();
+
+    await myLittleTiger.connect(deployer).setBaseURI(METADATA);
 
     return {
         deployer,

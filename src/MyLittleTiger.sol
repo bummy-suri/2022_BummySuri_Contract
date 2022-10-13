@@ -23,32 +23,35 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
         _;
     }
 
-    modifier preMintChecker() {
+    modifier preMintChecker(address receiver) {
         require(uriSet == true, "ContractError: INVALID_BASE_URI_SET");
         require(isWhiteListed[msg.sender] == true, "ContractError: ACCESS_DENIED");
+        require(msg.sender == masterAdmin || msg.sender == receiver, "ContractError: CALLER_IS_NOT_RECEIVER");
         require(totalSupply() + 1 <= assetLimit, "ContractError: ASSET_LIMIT");
         _;
     }
 
-    modifier transferBlockChecker() {
-        require(isTransferBlocked == false && msg.sender != masterAdmin, "ContractError: TRANSFER_BLOCKED");
+    modifier transferBlockChecker(address from) {
+        require(isTransferBlocked == false || from == masterAdmin, "ContractError: TRANSFER_BLOCKED");
         _;
     }
 
     function initialize(
         string memory name_,
         string memory symbol_,
-        string memory baseURI_,
         uint256 assetLimit_
     ) external initializer {
-        // TODO: name_, symbol_ 수정
         __ERC721_init(name_, symbol_);
         masterAdmin = msg.sender;
         whiteList.push(msg.sender);
         isWhiteListed[msg.sender] = true;
         assetLimit = assetLimit_;
-        uriSet = true;
         isTransferBlocked = false;
+    }
+
+    // Metadata set
+    function setBaseURI(string memory baseURI_) external onlyMasterAdmin {
+        uriSet = true;
         baseURIextended = baseURI_;
     }
 
@@ -61,11 +64,6 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
         isTransferBlocked = isTransferBlocked_;
     }
 
-    function setBaseURI(string memory baseURI_) external onlyMasterAdmin {
-        uriSet = true;
-        baseURIextended = baseURI_;
-    }
-
     // Set address to whitelist
     function setWhiteList(address user) external onlyMasterAdmin {
         require(isWhiteListed[user] == false, "ContractError: ALREADY_LISTED");
@@ -73,7 +71,7 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
         isWhiteListed[user] = true;
     }
 
-    // Mint function
+    // Internal mint function
     function _singleMint(address receiver) internal {
         uint256 id = _tokenIdCounter.current();
         if (id == 0) {
@@ -85,7 +83,10 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
         _tokenIdCounter.increment();
     }
 
-    function singleMint(address receiver) external preMintChecker {
+    /// @notice 일반 유저가 민팅하는 함수
+    /// @dev singleMint를 실행하여 Minting할 시, 유저가 직접 트랜잭션 요청을 보내는 경우 유저가 whiteList에 등록되어 있어야 한다.
+    /// @param receiver: 민팅한 NFT를 전송할 주소
+    function singleMint(address receiver) external preMintChecker(receiver) {
         _singleMint(receiver);
 
         // 화이트리스트에서 유저를 제거
@@ -101,8 +102,14 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
         isWhiteListed[receiver] = false;
     }
 
-    function adminMint(address receiver) external onlyMasterAdmin {
-        _singleMint(receiver);
+    /// @notice 관리자 이머전시 민팅 함수
+    /// @dev preMintChecker 제약조건을 무시하고, 민팅을 진행하는 이머전시 기능(일반적으로, 단일 민팅 시 SingleMint를 관리자가 실행한다.)
+    /// @param receiver: 민팅한 NFT를 전송할 주소
+    /// @param mintNum: receive에게 민팅할 수량
+    function adminMint(address receiver, uint256 mintNum) external onlyMasterAdmin {
+        for (uint256 i = 0; i < mintNum; i++) {
+            _singleMint(receiver);
+        }
     }
 
     // View function
@@ -135,7 +142,7 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
         address from,
         address to,
         uint256 tokenId
-    ) public override transferBlockChecker {
+    ) public override transferBlockChecker(from) {
         super.transferFrom(from, to, tokenId);
     }
 
@@ -143,7 +150,7 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
         address from,
         address to,
         uint256 tokenId
-    ) public override transferBlockChecker {
+    ) public override transferBlockChecker(from) {
         super.safeTransferFrom(from, to, tokenId);
     }
 
@@ -152,7 +159,7 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
         address to,
         uint256 tokenId,
         bytes memory data
-    ) public override transferBlockChecker {
+    ) public override transferBlockChecker(from) {
         super.safeTransferFrom(from, to, tokenId, data);
     }
 }

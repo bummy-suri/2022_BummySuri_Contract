@@ -41,11 +41,13 @@ describe("NFT 테스트", () => {
             expect(await myLittleTiger.balanceOf(user[0].address)).to.equal(BigNumber.from(num));
             expect(await myLittleTiger.tokenURI(BigNumber.from(num))).to.equal(METADATA.concat(`${num}.json`));
         });
+
         it("테스트: 화이트리스트에 없는 유저가 민팅을 시도할 시 Revert되는가?", async () => {
             await expect(myLittleTiger.connect(user[0]).singleMint(user[0].address)).to.be.revertedWith(
                 "ContractError: ACCESS_DENIED",
             );
         });
+
         it("테스트: 화이트리스트 등록이 진행되어 민팅을 받은 유저가 다시 민팅을 시도할 시 Revert되는가?", async () => {
             await myLittleTiger.connect(deployer).setWhiteList(user[0].address);
             await myLittleTiger.connect(user[0]).singleMint(user[0].address);
@@ -54,6 +56,7 @@ describe("NFT 테스트", () => {
                 "ContractError: ACCESS_DENIED",
             );
         });
+
         it("테스트: ASSET_LIMIT만큼 민팅이 이루어진 후 더 이상 민팅이 되지 않는가?", async () => {
             for (let i = 0; i < ASSET_LIMIT; i++) {
                 await myLittleTiger.connect(deployer).setWhiteList(user[0].address);
@@ -70,26 +73,25 @@ describe("NFT 테스트", () => {
     describe("관리자 프리민팅 관련 테스트", () => {
         it("테스트: 관리자 민팅 로직이 정상적으로 동작하는가?", async () => {
             const num = 1;
-            await myLittleTiger.connect(deployer).adminMint(user[0].address);
+            await myLittleTiger.connect(deployer).adminMint(user[0].address, BigNumber.from(1));
 
             expect(await myLittleTiger.ownerOf(BigNumber.from(num))).to.equal(user[0].address);
             expect(await myLittleTiger.balanceOf(user[0].address)).to.equal(BigNumber.from(num));
             expect(await myLittleTiger.tokenURI(BigNumber.from(num))).to.equal(METADATA.concat(`${num}.json`));
         });
 
-        it("관리자는 여러 번 민팅이 가능한가?", async () => {
-            await myLittleTiger.connect(deployer).adminMint(user[0].address);
-            await myLittleTiger.connect(deployer).adminMint(user[0].address);
-            await myLittleTiger.connect(deployer).adminMint(user[1].address);
+        it("관리자는 하나의 트랜잭션으로 여러 개의 민팅이 가능한가?", async () => {
+            await myLittleTiger.connect(deployer).adminMint(user[0].address, BigNumber.from(2));
+            await myLittleTiger.connect(deployer).adminMint(user[1].address, BigNumber.from(10));
 
             expect(await myLittleTiger.ownerOf(BigNumber.from(1))).to.equal(user[0].address);
             expect(await myLittleTiger.ownerOf(BigNumber.from(2))).to.equal(user[0].address);
-            expect(await myLittleTiger.ownerOf(BigNumber.from(3))).to.equal(user[1].address);
+            expect(await myLittleTiger.ownerOf(BigNumber.from(12))).to.equal(user[1].address);
         });
     });
 
     describe("전송 기능 제한 테스트", () => {
-        it("전송 기능 제한 시 다른 유저에게 전송이 불가능한가?", async () => {
+        it("테스트: 전송 기능 제한 시 다른 유저에게 전송이 불가능한가?", async () => {
             await myLittleTiger.connect(deployer).setTransferBlock(true);
 
             await myLittleTiger.connect(deployer).setWhiteList(user[0].address);
@@ -118,7 +120,7 @@ describe("NFT 테스트", () => {
             ).to.be.revertedWith("ContractError: TRANSFER_BLOCKED");
         });
 
-        it("전송 기능 해제 시 다시 다른 유저에게 전송이 가능한가?", async () => {
+        it("테스트: 전송 기능 해제 시 다시 다른 유저에게 전송이 가능한가?", async () => {
             await myLittleTiger.connect(deployer).setWhiteList(user[0].address);
             await myLittleTiger.connect(user[0]).singleMint(user[0].address);
 
@@ -127,7 +129,19 @@ describe("NFT 테스트", () => {
 
             await myLittleTiger.connect(user[0]).approve(user[1].address, BigNumber.from(1));
             await myLittleTiger.connect(user[1]).transferFrom(user[0].address, user[1].address, BigNumber.from(1));
+
             expect(await myLittleTiger.ownerOf(BigNumber.from(1))).to.equal(user[1].address);
+        });
+
+        it("테스트: 관리자는 전송 기능을 제한해도 전송이 가능한가?", async () => {
+            await myLittleTiger.connect(deployer).setTransferBlock(true);
+
+            await myLittleTiger.connect(deployer).setWhiteList(user[0].address);
+            await myLittleTiger.connect(deployer).singleMint(deployer.address);
+            await myLittleTiger.connect(deployer).approve(user[0].address, BigNumber.from(1));
+            await myLittleTiger.connect(user[0]).transferFrom(deployer.address, user[0].address, BigNumber.from(1));
+
+            expect(await myLittleTiger.ownerOf(BigNumber.from(1))).to.equal(user[0].address);
         });
     });
 });
