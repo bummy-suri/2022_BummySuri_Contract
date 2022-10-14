@@ -1,9 +1,9 @@
 {
-  "name": "baobab",
-  "chainId": "1001",
+  "name": "cypress",
+  "chainId": "8217",
   "contracts": {
     "MyLittleTiger_Implementation": {
-      "address": "0xa99f2413b95e89f6C021D619f06ADA472EF25785",
+      "address": "0x415df611e301982578AAd3746f6ef4A8FD639d8C",
       "abi": [
         {
           "anonymous": false,
@@ -623,7 +623,7 @@
       ]
     },
     "MyLittleTiger_Proxy": {
-      "address": "0xaaDB7e1E88b7f9265235BBBc5D22394C848fD9d3",
+      "address": "0x93107B2E3C786647a655AB8F061d886aC7eB6bb4",
       "abi": [
         {
           "inputs": [
@@ -771,7 +771,7 @@
       ]
     },
     "MyLittleTiger": {
-      "address": "0xaaDB7e1E88b7f9265235BBBc5D22394C848fD9d3",
+      "address": "0x93107B2E3C786647a655AB8F061d886aC7eB6bb4",
       "abi": [
         {
           "anonymous": false,
@@ -1515,7 +1515,7 @@
       ]
     },
     "MyLittleEagle_Implementation": {
-      "address": "0x9c3e559e8cE23619CC41eDDb3103d285Ad919E1A",
+      "address": "0x06348F16BC45F921De54F339B6E61b35F027be42",
       "abi": [
         {
           "anonymous": false,
@@ -2135,7 +2135,7 @@
       ]
     },
     "MyLittleEagle_Proxy": {
-      "address": "0xE818af6fDe51D84761abb74a6519e8f16437848D",
+      "address": "0xD1c7dc83BABb4DdAE120FdF44Bfc05560089eB9c",
       "abi": [
         {
           "inputs": [
@@ -2283,7 +2283,7 @@
       ]
     },
     "MyLittleEagle": {
-      "address": "0xE818af6fDe51D84761abb74a6519e8f16437848D",
+      "address": "0xD1c7dc83BABb4DdAE120FdF44Bfc05560089eB9c",
       "abi": [
         {
           "anonymous": false,

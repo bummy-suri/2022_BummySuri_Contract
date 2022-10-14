@@ -4,7 +4,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721Enumer
 import "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract MyLittleTiger is ERC721EnumerableUpgradeable {
+contract MyLittleEagle is ERC721EnumerableUpgradeable {
     using Counters for Counters.Counter;
     using StringsUpgradeable for uint256;
 

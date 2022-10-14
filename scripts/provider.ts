@@ -19,8 +19,8 @@ export const rpcInfo: {
     },
     cypress: {
         // TODO: 추가 필요
-        url: "",
-        chainId: 9999,
+        url: "https://public-node-api.klaytnapi.com/v1/cypress",
+        chainId: 8217,
     },
 };
 

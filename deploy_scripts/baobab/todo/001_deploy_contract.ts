@@ -7,18 +7,21 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const { deployer } = await getNamedAccounts();
 
     // 배포 전 확인: 최초 URI 및 데이터
-    const nftName = "Bumi And Suri Test";
-    const nftSymbol = "BAS";
-    const testURI = "https://gateway.pinata.cloud/ipfs/QmRqWYevvsX2m8qopRj7oAs4uWLPR2x9bNwVZBf3r5ajAw/";
-    const assetLimit = 3000;
+    const KUNftName = "Bummy";
+    const KUNftSymbol = "BAS";
+    const KUAssetLimit = 1500;
 
-    const MyLittleTiger = await deploy("MyLittleTiger", {
+    const YUNftName = "Suri";
+    const YUNftSymbol = "BAS";
+    const YUAssetLimit = 1500;
+
+    const KoreaUnivNFT = await deploy("MyLittleTiger", {
         from: deployer,
         proxy: {
             execute: {
                 init: {
                     methodName: "initialize",
-                    args: [nftName, nftSymbol, testURI, assetLimit],
+                    args: [KUNftName, KUNftSymbol, KUAssetLimit],
                 },
             },
         },
@@ -26,8 +29,25 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         autoMine: true,
     });
 
-    console.log("🐯 MyLittleTiger NFT 컨트랙트 배포 완료 :D 🐯");
-    console.log("컨트랙트 Address: ", MyLittleTiger.address);
+    console.log("🐯 고려대학교 NFT 컨트랙트 배포 완료 :D 🐯");
+    console.log("컨트랙트 주소: ", KoreaUnivNFT.address);
+
+    const YonseiUnivNFT = await deploy("MyLittleEagle", {
+        from: deployer,
+        proxy: {
+            execute: {
+                init: {
+                    methodName: "initialize",
+                    args: [YUNftName, YUNftSymbol, YUAssetLimit],
+                },
+            },
+        },
+        log: true,
+        autoMine: true,
+    });
+
+    console.log("🦅 연세대학교 NFT 컨트랙트 배포 완료 :D 🦅");
+    console.log("컨트랙트 주소: ", YonseiUnivNFT.address);
 };
 
 export default func;
