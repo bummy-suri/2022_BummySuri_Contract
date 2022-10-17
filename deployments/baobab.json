@@ -3,7 +3,7 @@
   "chainId": "1001",
   "contracts": {
     "MyLittleTiger_Implementation": {
-      "address": "0xa99f2413b95e89f6C021D619f06ADA472EF25785",
+      "address": "0x589a7aaF697d6ca196a579e6e8d07Eeb546a061c",
       "abi": [
         {
           "anonymous": false,
@@ -623,7 +623,7 @@
       ]
     },
     "MyLittleTiger_Proxy": {
-      "address": "0xaaDB7e1E88b7f9265235BBBc5D22394C848fD9d3",
+      "address": "0x8713357686f9783B8EEb2d6eDF0E823141381E53",
       "abi": [
         {
           "inputs": [
@@ -771,7 +771,7 @@
       ]
     },
     "MyLittleTiger": {
-      "address": "0xaaDB7e1E88b7f9265235BBBc5D22394C848fD9d3",
+      "address": "0x8713357686f9783B8EEb2d6eDF0E823141381E53",
       "abi": [
         {
           "anonymous": false,
@@ -1515,7 +1515,7 @@
       ]
     },
     "MyLittleEagle_Implementation": {
-      "address": "0x9c3e559e8cE23619CC41eDDb3103d285Ad919E1A",
+      "address": "0xD4A3E55Ac4d74a1130eBEC4540b406BC8CAdD125",
       "abi": [
         {
           "anonymous": false,
@@ -2135,7 +2135,7 @@
       ]
     },
     "MyLittleEagle_Proxy": {
-      "address": "0xE818af6fDe51D84761abb74a6519e8f16437848D",
+      "address": "0xCAEfDD519c2cEd08789395F7aBc9EFD5d84Ef3E6",
       "abi": [
         {
           "inputs": [
@@ -2283,7 +2283,7 @@
       ]
     },
     "MyLittleEagle": {
-      "address": "0xE818af6fDe51D84761abb74a6519e8f16437848D",
+      "address": "0xCAEfDD519c2cEd08789395F7aBc9EFD5d84Ef3E6",
       "abi": [
         {
           "anonymous": false,
