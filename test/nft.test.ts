@@ -40,6 +40,16 @@ describe("NFT 테스트", () => {
             expect(await myLittleTiger.ownerOf(BigNumber.from(num))).to.equal(user[0].address);
             expect(await myLittleTiger.balanceOf(user[0].address)).to.equal(BigNumber.from(num));
             expect(await myLittleTiger.tokenURI(BigNumber.from(num))).to.equal(METADATA.concat(`${num}.json`));
+
+            const transferEvent = await myLittleTiger.queryFilter(
+                myLittleTiger.filters.Transfer(),
+                0,
+                await ethers.provider.getBlockNumber(),
+            );
+
+            expect(transferEvent[0].args.from).to.equal(ethers.constants.AddressZero);
+            expect(transferEvent[0].args.to).to.equal(user[0].address);
+            expect(transferEvent[0].args.tokenId).to.equal(BigNumber.from(num));
         });
 
         it("테스트: 화이트리스트에 없는 유저가 민팅을 시도할 시 Revert되는가?", async () => {
@@ -71,13 +81,23 @@ describe("NFT 테스트", () => {
     });
 
     describe("관리자 프리민팅 관련 테스트", () => {
-        it("테스트: 관리자 민팅 로직이 정상적으로 동작하는가?", async () => {
+        it("테스트: 관리자 => 유저 민팅 로직이 정상적으로 동작하는가?", async () => {
             const num = 1;
             await myLittleTiger.connect(deployer).adminMint(user[0].address, BigNumber.from(1));
 
             expect(await myLittleTiger.ownerOf(BigNumber.from(num))).to.equal(user[0].address);
             expect(await myLittleTiger.balanceOf(user[0].address)).to.equal(BigNumber.from(num));
             expect(await myLittleTiger.tokenURI(BigNumber.from(num))).to.equal(METADATA.concat(`${num}.json`));
+
+            const transferEvent = await myLittleTiger.queryFilter(
+                myLittleTiger.filters.Transfer(),
+                0,
+                await ethers.provider.getBlockNumber(),
+            );
+
+            expect(transferEvent[0].args.from).to.equal(ethers.constants.AddressZero);
+            expect(transferEvent[0].args.to).to.equal(user[0].address);
+            expect(transferEvent[0].args.tokenId).to.equal(BigNumber.from(num));
         });
 
         it("관리자는 하나의 트랜잭션으로 여러 개의 민팅이 가능한가?", async () => {
@@ -90,7 +110,7 @@ describe("NFT 테스트", () => {
         });
     });
 
-    describe("전송 기능 제한 테스트", () => {
+    describe("전송 기능 및 전송 기능 제한 테스트", () => {
         it("테스트: 전송 기능 제한 시 다른 유저에게 전송이 불가능한가?", async () => {
             await myLittleTiger.connect(deployer).setTransferBlock(true);
 
@@ -131,6 +151,16 @@ describe("NFT 테스트", () => {
             await myLittleTiger.connect(user[1]).transferFrom(user[0].address, user[1].address, BigNumber.from(1));
 
             expect(await myLittleTiger.ownerOf(BigNumber.from(1))).to.equal(user[1].address);
+
+            const transferEvent = await myLittleTiger.queryFilter(
+                myLittleTiger.filters.Transfer(),
+                0,
+                await ethers.provider.getBlockNumber(),
+            );
+
+            expect(transferEvent[1].args.from).to.equal(user[0].address);
+            expect(transferEvent[1].args.to).to.equal(user[1].address);
+            expect(transferEvent[1].args.tokenId).to.equal(BigNumber.from(1));
         });
 
         it("테스트: 관리자는 전송 기능을 제한해도 전송이 가능한가?", async () => {
