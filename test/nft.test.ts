@@ -174,4 +174,13 @@ describe("NFT 테스트", () => {
             expect(await myLittleTiger.ownerOf(BigNumber.from(1))).to.equal(user[0].address);
         });
     });
+
+    describe("메타데이터 URI 재설정 테스트", () => {
+        it.only("테스트 물량 민팅 이후 메타데이터 URI 리셋이 가능한가?", async () => {
+            await myLittleTiger.connect(deployer).singleMint(deployer.address);
+            const realURI = "https://realURI/";
+            await myLittleTiger.connect(deployer).setBaseURI(realURI);
+            expect(await myLittleTiger.tokenURI(BigNumber.from(1))).to.be.equal(realURI.concat("1.json"));
+        });
+    });
 });

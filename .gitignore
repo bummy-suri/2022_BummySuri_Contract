@@ -9,6 +9,10 @@ deployments/hardhat
 deployments/localhost
 deployments/hardhat.json
 
+#Data files
+bytecode_eagle.zip
+bytecode_tiger.zip
+
 #Hardhat files
 cache
 artifacts

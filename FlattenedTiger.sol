@@ -62,16 +62,10 @@ library AddressUpgradeable {
      * https://solidity.readthedocs.io/en/v0.5.11/security-considerations.html#use-the-checks-effects-interactions-pattern[checks-effects-interactions pattern].
      */
     function sendValue(address payable recipient, uint256 amount) internal {
-        require(
-            address(this).balance >= amount,
-            "Address: insufficient balance"
-        );
+        require(address(this).balance >= amount, "Address: insufficient balance");
 
-        (bool success, ) = recipient.call{value: amount}("");
-        require(
-            success,
-            "Address: unable to send value, recipient may have reverted"
-        );
+        (bool success, ) = recipient.call{ value: amount }("");
+        require(success, "Address: unable to send value, recipient may have reverted");
     }
 
     /**
@@ -92,10 +86,7 @@ library AddressUpgradeable {
      *
      * _Available since v3.1._
      */
-    function functionCall(address target, bytes memory data)
-        internal
-        returns (bytes memory)
-    {
+    function functionCall(address target, bytes memory data) internal returns (bytes memory) {
         return functionCall(target, data, "Address: low-level call failed");
     }
 
@@ -129,13 +120,7 @@ library AddressUpgradeable {
         bytes memory data,
         uint256 value
     ) internal returns (bytes memory) {
-        return
-            functionCallWithValue(
-                target,
-                data,
-                value,
-                "Address: low-level call with value failed"
-            );
+        return functionCallWithValue(target, data, value, "Address: low-level call with value failed");
     }
 
     /**
@@ -150,15 +135,10 @@ library AddressUpgradeable {
         uint256 value,
         string memory errorMessage
     ) internal returns (bytes memory) {
-        require(
-            address(this).balance >= value,
-            "Address: insufficient balance for call"
-        );
+        require(address(this).balance >= value, "Address: insufficient balance for call");
         require(isContract(target), "Address: call to non-contract");
 
-        (bool success, bytes memory returndata) = target.call{value: value}(
-            data
-        );
+        (bool success, bytes memory returndata) = target.call{ value: value }(data);
         return verifyCallResult(success, returndata, errorMessage);
     }
 
@@ -168,17 +148,8 @@ library AddressUpgradeable {
      *
      * _Available since v3.3._
      */
-    function functionStaticCall(address target, bytes memory data)
-        internal
-        view
-        returns (bytes memory)
-    {
-        return
-            functionStaticCall(
-                target,
-                data,
-                "Address: low-level static call failed"
-            );
+    function functionStaticCall(address target, bytes memory data) internal view returns (bytes memory) {
+        return functionStaticCall(target, data, "Address: low-level static call failed");
     }
 
     /**
@@ -226,7 +197,6 @@ library AddressUpgradeable {
         }
     }
 }
-
 
 // File src/common/Initializable.sol
 
@@ -371,16 +341,12 @@ abstract contract Initializable {
             );
             return false;
         } else {
-            require(
-                _initialized < version,
-                "Initializable: contract is already initialized"
-            );
+            require(_initialized < version, "Initializable: contract is already initialized");
             _initialized = version;
             return true;
         }
     }
 }
-
 
 // File src/common/Context.sol
 
@@ -420,7 +386,6 @@ abstract contract ContextUpgradeable is Initializable {
     uint256[50] private __gap;
 }
 
-
 // File @openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol@v4.7.3
 
 // SPDX-License-Identifier: MIT
@@ -448,7 +413,6 @@ interface IERC165Upgradeable {
      */
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
-
 
 // File @openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol@v4.7.3
 
@@ -594,7 +558,6 @@ interface IERC721Upgradeable is IERC165Upgradeable {
     function isApprovedForAll(address owner, address operator) external view returns (bool);
 }
 
-
 // File @openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol@v4.7.3
 
 // SPDX-License-Identifier: MIT
@@ -625,7 +588,6 @@ interface IERC721ReceiverUpgradeable {
     ) external returns (bytes4);
 }
 
-
 // File @openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721MetadataUpgradeable.sol@v4.7.3
 
 // SPDX-License-Identifier: MIT
@@ -653,7 +615,6 @@ interface IERC721MetadataUpgradeable is IERC721Upgradeable {
      */
     function tokenURI(uint256 tokenId) external view returns (string memory);
 }
-
 
 // File @openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol@v4.7.3
 
@@ -719,7 +680,7 @@ library AddressUpgradeable {
     function sendValue(address payable recipient, uint256 amount) internal {
         require(address(this).balance >= amount, "Address: insufficient balance");
 
-        (bool success, ) = recipient.call{value: amount}("");
+        (bool success, ) = recipient.call{ value: amount }("");
         require(success, "Address: unable to send value, recipient may have reverted");
     }
 
@@ -793,7 +754,7 @@ library AddressUpgradeable {
         require(address(this).balance >= value, "Address: insufficient balance for call");
         require(isContract(target), "Address: call to non-contract");
 
-        (bool success, bytes memory returndata) = target.call{value: value}(data);
+        (bool success, bytes memory returndata) = target.call{ value: value }(data);
         return verifyCallResult(success, returndata, errorMessage);
     }
 
@@ -852,7 +813,6 @@ library AddressUpgradeable {
         }
     }
 }
-
 
 // File @openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol@v4.7.3
 
@@ -934,7 +894,8 @@ abstract contract Initializable {
     modifier initializer() {
         bool isTopLevelCall = !_initializing;
         require(
-            (isTopLevelCall && _initialized < 1) || (!AddressUpgradeable.isContract(address(this)) && _initialized == 1),
+            (isTopLevelCall && _initialized < 1) ||
+                (!AddressUpgradeable.isContract(address(this)) && _initialized == 1),
             "Initializable: contract is already initialized"
         );
         _initialized = 1;
@@ -993,7 +954,6 @@ abstract contract Initializable {
     }
 }
 
-
 // File @openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol@v4.7.3
 
 // SPDX-License-Identifier: MIT
@@ -1012,11 +972,10 @@ pragma solidity ^0.8.0;
  * This contract is only required for intermediate, library-like contracts.
  */
 abstract contract ContextUpgradeable is Initializable {
-    function __Context_init() internal onlyInitializing {
-    }
+    function __Context_init() internal onlyInitializing {}
 
-    function __Context_init_unchained() internal onlyInitializing {
-    }
+    function __Context_init_unchained() internal onlyInitializing {}
+
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
     }
@@ -1032,7 +991,6 @@ abstract contract ContextUpgradeable is Initializable {
      */
     uint256[50] private __gap;
 }
-
 
 // File @openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol@v4.7.3
 
@@ -1112,14 +1070,12 @@ library StringsUpgradeable {
     }
 }
 
-
 // File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol@v4.7.3
 
 // SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/ERC165.sol)
 
 pragma solidity ^0.8.0;
-
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -1136,11 +1092,10 @@ pragma solidity ^0.8.0;
  * Alternatively, {ERC165Storage} provides an easier to use but more expensive implementation.
  */
 abstract contract ERC165Upgradeable is Initializable, IERC165Upgradeable {
-    function __ERC165_init() internal onlyInitializing {
-    }
+    function __ERC165_init() internal onlyInitializing {}
 
-    function __ERC165_init_unchained() internal onlyInitializing {
-    }
+    function __ERC165_init_unchained() internal onlyInitializing {}
+
     /**
      * @dev See {IERC165-supportsInterface}.
      */
@@ -1156,7 +1111,6 @@ abstract contract ERC165Upgradeable is Initializable, IERC165Upgradeable {
     uint256[50] private __gap;
 }
 
-
 // File @openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol@v4.7.3
 
 // SPDX-License-Identifier: MIT
@@ -1164,19 +1118,18 @@ abstract contract ERC165Upgradeable is Initializable, IERC165Upgradeable {
 
 pragma solidity ^0.8.0;
 
-
-
-
-
-
-
-
 /**
  * @dev Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including
  * the Metadata extension, but not including the Enumerable extension, which is available separately as
  * {ERC721Enumerable}.
  */
-contract ERC721Upgradeable is Initializable, ContextUpgradeable, ERC165Upgradeable, IERC721Upgradeable, IERC721MetadataUpgradeable {
+contract ERC721Upgradeable is
+    Initializable,
+    ContextUpgradeable,
+    ERC165Upgradeable,
+    IERC721Upgradeable,
+    IERC721MetadataUpgradeable
+{
     using AddressUpgradeable for address;
     using StringsUpgradeable for uint256;
 
@@ -1213,7 +1166,13 @@ contract ERC721Upgradeable is Initializable, ContextUpgradeable, ERC165Upgradeab
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165Upgradeable, IERC165Upgradeable) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC165Upgradeable, IERC165Upgradeable)
+        returns (bool)
+    {
         return
             interfaceId == type(IERC721Upgradeable).interfaceId ||
             interfaceId == type(IERC721MetadataUpgradeable).interfaceId ||
@@ -1562,7 +1521,9 @@ contract ERC721Upgradeable is Initializable, ContextUpgradeable, ERC165Upgradeab
         bytes memory data
     ) private returns (bool) {
         if (to.isContract()) {
-            try IERC721ReceiverUpgradeable(to).onERC721Received(_msgSender(), from, tokenId, data) returns (bytes4 retval) {
+            try IERC721ReceiverUpgradeable(to).onERC721Received(_msgSender(), from, tokenId, data) returns (
+                bytes4 retval
+            ) {
                 return retval == IERC721ReceiverUpgradeable.onERC721Received.selector;
             } catch (bytes memory reason) {
                 if (reason.length == 0) {
@@ -1624,7 +1585,6 @@ contract ERC721Upgradeable is Initializable, ContextUpgradeable, ERC165Upgradeab
     uint256[44] private __gap;
 }
 
-
 // File @openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol@v4.7.3
 
 // SPDX-License-Identifier: MIT
@@ -1655,7 +1615,6 @@ interface IERC721EnumerableUpgradeable is IERC721Upgradeable {
     function tokenByIndex(uint256 index) external view returns (uint256);
 }
 
-
 // File @openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol@v4.7.3
 
 // SPDX-License-Identifier: MIT
@@ -1663,19 +1622,16 @@ interface IERC721EnumerableUpgradeable is IERC721Upgradeable {
 
 pragma solidity ^0.8.0;
 
-
-
 /**
  * @dev This implements an optional extension of {ERC721} defined in the EIP that adds
  * enumerability of all the token ids in the contract as well as all token ids owned by each
  * account.
  */
 abstract contract ERC721EnumerableUpgradeable is Initializable, ERC721Upgradeable, IERC721EnumerableUpgradeable {
-    function __ERC721Enumerable_init() internal onlyInitializing {
-    }
+    function __ERC721Enumerable_init() internal onlyInitializing {}
 
-    function __ERC721Enumerable_init_unchained() internal onlyInitializing {
-    }
+    function __ERC721Enumerable_init_unchained() internal onlyInitializing {}
+
     // Mapping from owner to list of owned token IDs
     mapping(address => mapping(uint256 => uint256)) private _ownedTokens;
 
@@ -1691,7 +1647,13 @@ abstract contract ERC721EnumerableUpgradeable is Initializable, ERC721Upgradeabl
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165Upgradeable, ERC721Upgradeable) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(IERC165Upgradeable, ERC721Upgradeable)
+        returns (bool)
+    {
         return interfaceId == type(IERC721EnumerableUpgradeable).interfaceId || super.supportsInterface(interfaceId);
     }
 
@@ -1833,7 +1795,6 @@ abstract contract ERC721EnumerableUpgradeable is Initializable, ERC721Upgradeabl
     uint256[46] private __gap;
 }
 
-
 // File @openzeppelin/contracts/utils/Counters.sol@v4.6.0
 
 // SPDX-License-Identifier: MIT
@@ -1880,184 +1841,9 @@ library Counters {
     }
 }
 
-
-// File src/MyLittleEagle.sol
-
-pragma solidity 0.8.11;
-
-
-
-contract MyLittleEagle is ERC721EnumerableUpgradeable {
-    using Counters for Counters.Counter;
-    using StringsUpgradeable for uint256;
-
-    address[] public whiteList;
-    mapping(address => bool) isWhiteListed;
-    bool public isTransferBlocked;
-
-    address public masterAdmin;
-    uint256 public assetLimit;
-    string public baseURIextended;
-    bool public uriSet;
-    Counters.Counter public _tokenIdCounter;
-
-    modifier onlyMasterAdmin() {
-        require(msg.sender == masterAdmin, "ContractError: CALLER_MUST_BE_MASTERADMIN");
-        _;
-    }
-
-    modifier preMintChecker(address receiver) {
-        require(uriSet == true, "ContractError: INVALID_BASE_URI_SET");
-        require(isWhiteListed[msg.sender] == true, "ContractError: ACCESS_DENIED");
-        require(msg.sender == masterAdmin || msg.sender == receiver, "ContractError: CALLER_IS_NOT_RECEIVER");
-        require(totalSupply() + 1 <= assetLimit, "ContractError: ASSET_LIMIT");
-        _;
-    }
-
-    modifier transferBlockChecker(address from) {
-        require(isTransferBlocked == false || from == masterAdmin, "ContractError: TRANSFER_BLOCKED");
-        _;
-    }
-
-    function initialize(
-        string memory name_,
-        string memory symbol_,
-        uint256 assetLimit_
-    ) external initializer {
-        __ERC721_init(name_, symbol_);
-        masterAdmin = msg.sender;
-        whiteList.push(msg.sender);
-        isWhiteListed[msg.sender] = true;
-        assetLimit = assetLimit_;
-        uriSet = false;
-        isTransferBlocked = false;
-    }
-
-    // Metadata set
-    function setBaseURI(string memory baseURI_) external onlyMasterAdmin {
-        uriSet = true;
-        baseURIextended = baseURI_;
-    }
-
-    // Emergency function
-    function setMasterAdmin(address masterAdmin_) external onlyMasterAdmin {
-        masterAdmin = masterAdmin_;
-    }
-
-    function setAssetLimit(uint256 assetLimit_) external onlyMasterAdmin {
-        assetLimit = assetLimit_;
-    }
-
-    function setTransferBlock(bool isTransferBlocked_) external onlyMasterAdmin {
-        isTransferBlocked = isTransferBlocked_;
-    }
-
-    // Set address to whitelist
-    function setWhiteList(address user) external onlyMasterAdmin {
-        require(isWhiteListed[user] == false, "ContractError: ALREADY_LISTED");
-        whiteList.push(user);
-        isWhiteListed[user] = true;
-    }
-
-    // Internal mint function
-    function _singleMint(address receiver) internal {
-        uint256 id = _tokenIdCounter.current();
-        if (id == 0) {
-            _tokenIdCounter.increment();
-            id = _tokenIdCounter.current();
-        }
-
-        _safeMint(receiver, id);
-        _tokenIdCounter.increment();
-    }
-
-    /// @notice 일반 유저가 민팅하는 함수
-    /// @dev singleMint를 실행하여 Minting할 시, 유저가 직접 트랜잭션 요청을 보내는 경우 유저가 whiteList에 등록되어 있어야 한다.
-    /// @param receiver: 민팅한 NFT를 전송할 주소
-    function singleMint(address receiver) external preMintChecker(receiver) {
-        _singleMint(receiver);
-
-        // 화이트리스트에서 유저를 제거
-        address[] memory whiteListLocal = whiteList;
-        uint256 len = whiteListLocal.length;
-        for (uint256 i = 0; i < len; i += 1) {
-            if (whiteList[i] == receiver) {
-                whiteList[i] = whiteList[len - 1]; // i 번째 index를 마지막 index의 data로 변경 (i번째 삭제)
-                whiteList.pop(); // 마지막 index data 삭제 (i 번째 index에 이미 옮겨진 data)
-                break;
-            }
-        }
-        isWhiteListed[receiver] = false;
-    }
-
-    /// @notice 관리자 이머전시 민팅 함수
-    /// @dev preMintChecker 제약조건을 무시하고, 민팅을 진행하는 이머전시 기능(일반적으로, 단일 민팅 시 SingleMint를 관리자가 실행한다.)
-    /// @param receiver: 민팅한 NFT를 전송할 주소
-    /// @param mintNum: receive에게 민팅할 수량
-    function adminMint(address receiver, uint256 mintNum) external onlyMasterAdmin {
-        for (uint256 i = 0; i < mintNum; i++) {
-            _singleMint(receiver);
-        }
-    }
-
-    // View function
-    function supportsInterface(bytes4 interfaceId) public view override(ERC721EnumerableUpgradeable) returns (bool) {
-        return super.supportsInterface(interfaceId);
-    }
-
-    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-        _requireMinted(tokenId);
-
-        string memory baseURI = _baseURI();
-        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString(), ".json")) : "";
-    }
-
-    // internal function
-    function _baseURI() internal view virtual override returns (string memory) {
-        return baseURIextended;
-    }
-
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override(ERC721EnumerableUpgradeable) {
-        super._beforeTokenTransfer(from, to, tokenId);
-    }
-
-    // 상속받은 Transfer 함수 - 정책에 따라 Transfer 여부 수정
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public override transferBlockChecker(from) {
-        super.transferFrom(from, to, tokenId);
-    }
-
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public override transferBlockChecker(from) {
-        super.safeTransferFrom(from, to, tokenId);
-    }
-
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId,
-        bytes memory data
-    ) public override transferBlockChecker(from) {
-        super.safeTransferFrom(from, to, tokenId, data);
-    }
-}
-
-
 // File src/MyLittleTiger.sol
 
 pragma solidity 0.8.11;
-
-
 
 contract MyLittleTiger is ERC721EnumerableUpgradeable {
     using Counters for Counters.Counter;
