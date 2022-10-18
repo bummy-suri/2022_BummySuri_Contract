@@ -177,10 +177,11 @@ describe("NFT 테스트", () => {
 
     describe("메타데이터 URI 재설정 테스트", () => {
         it.only("테스트 물량 민팅 이후 메타데이터 URI 리셋이 가능한가?", async () => {
-            await myLittleTiger.connect(deployer).singleMint(deployer.address);
+            await myLittleTiger.connect(deployer).adminMint(deployer.address, BigNumber.from(10));
             const realURI = "https://realURI/";
             await myLittleTiger.connect(deployer).setBaseURI(realURI);
             expect(await myLittleTiger.tokenURI(BigNumber.from(1))).to.be.equal(realURI.concat("1.json"));
+            expect(await myLittleTiger.tokenURI(BigNumber.from(10))).to.be.equal(realURI.concat("10.json"));
         });
     });
 });

@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 // NFT 수령 대상
 const getter = "0xf2616B64972Df1CfDD5301cc95dc3c07979CdA81";
 
-export const callSingleMint = async () => {
+export const callKUSingleMint = async () => {
     const network = process.env.NETWORK as Network;
     const { myLittleTigerAddr, myLittleTigerABI } = addressInfo[network];
     const MyLittleTiger = new ethers.Contract(myLittleTigerAddr, myLittleTigerABI, provider);
@@ -21,4 +21,4 @@ export const callSingleMint = async () => {
     console.log(`총 발행량 확인: ${await MyLittleTiger.totalSupply()}`);
 };
 
-callSingleMint();
+callKUSingleMint();
