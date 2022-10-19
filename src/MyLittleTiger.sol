@@ -9,7 +9,7 @@ contract MyLittleTiger is ERC721EnumerableUpgradeable {
     using StringsUpgradeable for uint256;
 
     address[] public whiteList;
-    mapping(address => bool) isWhiteListed;
+    mapping(address => bool) public isWhiteListed;
     bool public isTransferBlocked;
 
     address public masterAdmin;

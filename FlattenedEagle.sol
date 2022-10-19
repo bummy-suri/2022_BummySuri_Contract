@@ -1850,7 +1850,7 @@ contract MyLittleEagle is ERC721EnumerableUpgradeable {
     using StringsUpgradeable for uint256;
 
     address[] public whiteList;
-    mapping(address => bool) isWhiteListed;
+    mapping(address => bool) public isWhiteListed;
     bool public isTransferBlocked;
 
     address public masterAdmin;
@@ -1935,17 +1935,20 @@ contract MyLittleEagle is ERC721EnumerableUpgradeable {
     function singleMint(address receiver) external preMintChecker(receiver) {
         _singleMint(receiver);
 
-        // 화이트리스트에서 유저를 제거
-        address[] memory whiteListLocal = whiteList;
-        uint256 len = whiteListLocal.length;
-        for (uint256 i = 0; i < len; i += 1) {
-            if (whiteList[i] == receiver) {
-                whiteList[i] = whiteList[len - 1]; // i 번째 index를 마지막 index의 data로 변경 (i번째 삭제)
-                whiteList.pop(); // 마지막 index data 삭제 (i 번째 index에 이미 옮겨진 data)
-                break;
+        // 마스터 어드민의 경우, 화이트리스트 권한을 유지해야 한다.
+        if (msg.sender != masterAdmin) {
+            // 화이트리스트에서 유저를 제거
+            address[] memory whiteListLocal = whiteList;
+            uint256 len = whiteListLocal.length;
+            for (uint256 i = 0; i < len; i += 1) {
+                if (whiteList[i] == receiver) {
+                    whiteList[i] = whiteList[len - 1]; // i 번째 index를 마지막 index의 data로 변경 (i번째 삭제)
+                    whiteList.pop(); // 마지막 index data 삭제 (i 번째 index에 이미 옮겨진 data)
+                    break;
+                }
             }
+            isWhiteListed[receiver] = false;
         }
-        isWhiteListed[receiver] = false;
     }
 
     /// @notice 관리자 이머전시 민팅 함수

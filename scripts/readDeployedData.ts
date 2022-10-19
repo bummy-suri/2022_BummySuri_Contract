@@ -10,10 +10,12 @@ export const readDeployedData = async () => {
     console.log("Name: ", await MyLittleTiger.name());
     console.log("Symbol: ", await MyLittleTiger.symbol());
     console.log("Asset Limit: ", (await MyLittleTiger.assetLimit()).toString());
-    console.log("TotalSupply: ", (await MyLittleTiger._tokenIdCounter()).toString());
+    console.log("TotalSupply: ", (await MyLittleTiger.totalSupply()).toString());
     console.log("MasterAdmin: ", await MyLittleTiger.masterAdmin());
     console.log("URISet: ", await MyLittleTiger.uriSet());
+    console.log("baseURI: ", await MyLittleTiger.baseURIextended());
     console.log("Transfer Check: ", await MyLittleTiger.isTransferBlocked());
+    console.log("Admin WhiteList Check: ", await MyLittleTiger.isWhiteListed(wallet.address));
 
     console.log("정보를 모두 조회하였습니다. :D");
 
@@ -23,10 +25,12 @@ export const readDeployedData = async () => {
     console.log("Name: ", await MyLittleEagle.name());
     console.log("Symbol: ", await MyLittleEagle.symbol());
     console.log("Asset Limit: ", (await MyLittleEagle.assetLimit()).toString());
-    console.log("TotalSupply: ", (await MyLittleEagle._tokenIdCounter()).toString());
+    console.log("TotalSupply: ", (await MyLittleEagle.totalSupply()).toString());
     console.log("MasterAdmin: ", await MyLittleEagle.masterAdmin());
     console.log("URISet: ", await MyLittleEagle.uriSet());
+    console.log("baseURI: ", await MyLittleTiger.baseURIextended());
     console.log("Transfer Check: ", await MyLittleEagle.isTransferBlocked());
+    console.log("Admin WhiteList Check: ", await MyLittleEagle.isWhiteListed(wallet.address));
 
     console.log("정보를 모두 조회하였습니다. :D");
 };

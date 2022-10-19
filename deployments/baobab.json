@@ -389,6 +389,25 @@
           "type": "function"
         },
         {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "name": "isWhiteListed",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
           "inputs": [],
           "name": "masterAdmin",
           "outputs": [
@@ -747,7 +766,7 @@
       ]
     },
     "MyLittleEagle_Implementation": {
-      "address": "0x7446ef9D2C37622315b3b64666C65883eb0380AB",
+      "address": "0x83858f16CEA4719e6781A617cF7a77e023F9CBF9",
       "abi": [
         {
           "anonymous": false,
@@ -1000,6 +1019,25 @@
         {
           "inputs": [],
           "name": "isTransferBlocked",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "name": "isWhiteListed",
           "outputs": [
             {
               "internalType": "bool",
@@ -1901,6 +1939,25 @@
           "type": "function"
         },
         {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "name": "isWhiteListed",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
           "inputs": [],
           "name": "masterAdmin",
           "outputs": [
@@ -2259,7 +2316,7 @@
       ]
     },
     "MyLittleTiger_Implementation": {
-      "address": "0x661C0De1DD7958F4486631145077662863B05CD7",
+      "address": "0x970038496C28ECBF9Daac0CdC489AAAcd3E36624",
       "abi": [
         {
           "anonymous": false,
@@ -2512,6 +2569,25 @@
         {
           "inputs": [],
           "name": "isTransferBlocked",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "name": "isWhiteListed",
           "outputs": [
             {
               "internalType": "bool",
