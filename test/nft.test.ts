@@ -108,6 +108,16 @@ describe("NFT 테스트", () => {
             expect(await myLittleTiger.ownerOf(BigNumber.from(2))).to.equal(user[0].address);
             expect(await myLittleTiger.ownerOf(BigNumber.from(12))).to.equal(user[1].address);
         });
+
+        it("관리자가 singleMint를 화이트리스트 등록 없이 여러번 수행할 수 있는가?", async () => {
+            await myLittleTiger.connect(deployer).singleMint(deployer.address);
+            await myLittleTiger.connect(deployer).singleMint(deployer.address);
+            await myLittleTiger.connect(deployer).singleMint(user[0].address);
+
+            expect(await myLittleTiger.ownerOf(BigNumber.from(1))).to.equal(deployer.address);
+            expect(await myLittleTiger.ownerOf(BigNumber.from(2))).to.equal(deployer.address);
+            expect(await myLittleTiger.ownerOf(BigNumber.from(3))).to.equal(user[0].address);
+        });
     });
 
     describe("전송 기능 및 전송 기능 제한 테스트", () => {
@@ -176,7 +186,7 @@ describe("NFT 테스트", () => {
     });
 
     describe("메타데이터 URI 재설정 테스트", () => {
-        it.only("테스트 물량 민팅 이후 메타데이터 URI 리셋이 가능한가?", async () => {
+        it("테스트 물량 민팅 이후 메타데이터 URI 리셋이 가능한가?", async () => {
             await myLittleTiger.connect(deployer).adminMint(deployer.address, BigNumber.from(10));
             const realURI = "https://realURI/";
             await myLittleTiger.connect(deployer).setBaseURI(realURI);

@@ -10,6 +10,7 @@ export const readDeployedData = async () => {
     console.log("Name: ", await MyLittleTiger.name());
     console.log("Symbol: ", await MyLittleTiger.symbol());
     console.log("Asset Limit: ", (await MyLittleTiger.assetLimit()).toString());
+    console.log("TotalSupply: ", (await MyLittleTiger._tokenIdCounter()).toString());
     console.log("MasterAdmin: ", await MyLittleTiger.masterAdmin());
     console.log("URISet: ", await MyLittleTiger.uriSet());
     console.log("Transfer Check: ", await MyLittleTiger.isTransferBlocked());
@@ -22,6 +23,7 @@ export const readDeployedData = async () => {
     console.log("Name: ", await MyLittleEagle.name());
     console.log("Symbol: ", await MyLittleEagle.symbol());
     console.log("Asset Limit: ", (await MyLittleEagle.assetLimit()).toString());
+    console.log("TotalSupply: ", (await MyLittleEagle._tokenIdCounter()).toString());
     console.log("MasterAdmin: ", await MyLittleEagle.masterAdmin());
     console.log("URISet: ", await MyLittleEagle.uriSet());
     console.log("Transfer Check: ", await MyLittleEagle.isTransferBlocked());
