@@ -14,20 +14,20 @@ export const setMetadata = async () => {
     const myLittleEagleContract = new ethers.Contract(myLittleEagleAddr, myLittleEagleABI, provider) as MyLittleEagle;
 
     await (
-        await myLittleTigerContract.connect(wallet).setBaseURI(koreaBaseURILink, {
+        await myLittleTigerContract.connect(wallet).setInitialReEntrancyValue({
             gasLimit: 10000000,
         })
     ).wait();
 
     await (
-        await myLittleEagleContract.connect(wallet).setBaseURI(yonseiBaseURILink, {
+        await myLittleEagleContract.connect(wallet).setInitialReEntrancyValue({
             gasLimit: 10000000,
         })
     ).wait();
 
-    console.log("baseURI 세팅이 완료되었습니다 :D");
-    console.log(`고려대학교 baseURI Link 확인: ${await myLittleTigerContract.baseURIextended()}`);
-    console.log(`연세대학교 baseURI Link 확인: ${await myLittleEagleContract.baseURIextended()}`);
+    console.log("세팅이 완료되었습니다 :D");
+    console.log(`고려대학교 value 확인: ${await myLittleTigerContract.unlocked()}`);
+    console.log(`연세대학교 value 확인: ${await myLittleEagleContract.unlocked()}`);
 };
 
 setMetadata();

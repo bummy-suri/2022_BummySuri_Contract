@@ -4,7 +4,7 @@ import { ethers, BigNumber } from "ethers";
 
 // NFT 수령 대상
 const getter = "0xf2616B64972Df1CfDD5301cc95dc3c07979CdA81";
-const mintNum = BigNumber.from(1);
+const mintNum = BigNumber.from(2);
 
 export const callKUAdminMint = async () => {
     const network = process.env.NETWORK as Network;

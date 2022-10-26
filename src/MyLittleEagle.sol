@@ -18,6 +18,9 @@ contract MyLittleEagle is ERC721EnumerableUpgradeable {
     bool public uriSet;
     Counters.Counter public _tokenIdCounter;
 
+    uint256 public unlocked;
+    mapping(address => bool) public isMinted;
+
     modifier onlyMasterAdmin() {
         require(msg.sender == masterAdmin, "ContractError: CALLER_MUST_BE_MASTERADMIN");
         _;
@@ -28,12 +31,20 @@ contract MyLittleEagle is ERC721EnumerableUpgradeable {
         require(isWhiteListed[msg.sender] == true, "ContractError: ACCESS_DENIED");
         require(msg.sender == masterAdmin || msg.sender == receiver, "ContractError: CALLER_IS_NOT_RECEIVER");
         require(totalSupply() + 1 <= assetLimit, "ContractError: ASSET_LIMIT");
+        require(isMinted[receiver] == false, "ContractError: IS_MINTED");
         _;
     }
 
     modifier transferBlockChecker(address from) {
         require(isTransferBlocked == false || from == masterAdmin, "ContractError: TRANSFER_BLOCKED");
         _;
+    }
+
+    modifier lock() {
+        require(unlocked == 1, "E10");
+        unlocked = 0;
+        _;
+        unlocked = 1;
     }
 
     function initialize(
@@ -69,6 +80,14 @@ contract MyLittleEagle is ERC721EnumerableUpgradeable {
         isTransferBlocked = isTransferBlocked_;
     }
 
+    function setInitialReEntrancyValue() external onlyMasterAdmin {
+        unlocked = 1;
+    }
+
+    function setIsMinted(address user, bool value) external onlyMasterAdmin {
+        isMinted[user] = value;
+    }
+
     // Set address to whitelist
     function setWhiteList(address user) external onlyMasterAdmin {
         require(isWhiteListed[user] == false, "ContractError: ALREADY_LISTED");
@@ -91,8 +110,9 @@ contract MyLittleEagle is ERC721EnumerableUpgradeable {
     /// @notice 일반 유저가 민팅하는 함수
     /// @dev singleMint를 실행하여 Minting할 시, 유저가 직접 트랜잭션 요청을 보내는 경우 유저가 whiteList에 등록되어 있어야 한다.
     /// @param receiver: 민팅한 NFT를 전송할 주소
-    function singleMint(address receiver) external preMintChecker(receiver) {
+    function singleMint(address receiver) external preMintChecker(receiver) lock {
         _singleMint(receiver);
+        isMinted[receiver] = true;
 
         // 마스터 어드민의 경우, 화이트리스트 권한을 유지해야 한다.
         if (msg.sender != masterAdmin) {
